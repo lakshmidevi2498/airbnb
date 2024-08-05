@@ -213,23 +213,6 @@
 
 
 } 
-/* .swiper-pagination {
-
-  background-color: white;
-  padding: 3px 5px; 
-  border-radius: 3px;
-  position: absolute; 
- 
-  bottom: 10px; 
-  font-size: 12px; 
-  color: white;
-  display: flex; 
-  justify-content: flex-end; 
-  align-items: center; 
-  white-space: nowrap; 
-  z-index: 10; 
-  width: 20px; 
-} */
 
 .swiper-pagination-fraction {
   background-color: rgb(0,0,0,0.6); 
@@ -250,11 +233,8 @@
 
   .swiper-pagination{
     position: absolute;
-    z-index: 10;
-    /* padding-left: 10px;
-    text-align: left !important; */
-    color:white !important;
-    /* top: 10% !important; */
+    z-index: 10; 
+    color:white !important; 
   }
 
 
