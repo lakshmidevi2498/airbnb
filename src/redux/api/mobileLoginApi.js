@@ -18,6 +18,8 @@ export const mobileLoginApi = async (phoneNumber, recaptchaContainerId) => {
     await recaptchaVerifier.render();
 
     console.log("phoneNumber in api ---->", phoneNumber);
+    const number = localStorage.setItem("number",phoneNumber.charAt(3))
+    console.log("phoneNumber in api ---->", phoneNumber.charAt(3));
 
     const response = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
     console.log("response", response);

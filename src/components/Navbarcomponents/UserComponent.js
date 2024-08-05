@@ -9,6 +9,9 @@ const UserComponent = () => {
   const [ anchorE1 , setAnchorE1] = useState(null)
   const [user , setUser] =useState("")
   const navigate = useNavigate();
+  const userName = localStorage.getItem("userFirstLetter")
+  const number = localStorage.getItem("number")
+  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(person => {
         setUser(person);
@@ -70,7 +73,7 @@ const handleProfile = () => {
         <Imports.LanguageIcon sx={{ color: 'black' }} fontSize='small' />
         <Imports.Grid  item  sx={{   display: 'flex',  justifyContent: 'center',  alignItems: 'center',  border: '1px solid lightgrey',  gap: '10px',  padding: '10px', borderRadius: '50px',  position: 'relative',  cursor: 'pointer'  }} onClick={handleSignUp}  >
           <Imports.MenuIcon sx={{ fontSize: 30 }} />
-          {user ? ( <Imports.Avatar sx={{ bgcolor: deepPurple[500] ,width: 30, height: 30, fontSize: 20 }} >L</Imports.Avatar>)
+          {user ? ( <Imports.Avatar sx={{ bgcolor: deepPurple[500] ,width: 30, height: 30, fontSize: 20 }} >{userName} || L || {number}</Imports.Avatar>)
            : (  <Imports.AccountCircleIcon sx={{ fontSize: 30, color: 'black' }} /> )}
         </Imports.Grid>
         <Imports.Menu  id="simple-menu"  anchorEl={anchorE1}  keepMounted  open={Boolean(anchorE1)}  onClose={handleClose}

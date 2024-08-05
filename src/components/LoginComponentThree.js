@@ -41,6 +41,7 @@ const handleFname = (fname) => {
     }
     else{
         setError((prevErrors) => ({...prevErrors ,fnameError:false }))
+        
         return true
     }
 }

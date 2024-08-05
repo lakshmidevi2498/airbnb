@@ -8,6 +8,7 @@ import LoginComponentOne from './LoginComponentOne';
 import LoginComponentTwo from './LoginComponentTwo';
 import { googleLoginInitiate } from '../redux/action/googleLoginAction';
 import EmailValidationComponent from './EmailValidationComponent';
+import { getAuth, PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 
 const LoginComponentFour = ({setSignup ,first , setFirst,handlePhone,handleDisplay}) => {
     const dispatch = useDispatch()
@@ -456,25 +457,57 @@ const LoginComponentFour = ({setSignup ,first , setFirst,handlePhone,handleDispl
      
       const handleSendOtp = async (e) => {
         e.preventDefault();
-        console.log(data.phoneNumber);
-        const initiaterresponse = await dispatch(mobileLoginInitiate(data.phoneNumber));
-        console.log("initiaterresponse", initiaterresponse);
-        setUser(initiaterresponse);
-      };
-
-      const handleVerify = async () => {
-        console.log("user---->",user)
+        console.log('Phone number:', data.phoneNumber);
+      
         try {
-          const data = await user.confirm(data.otp);console.log('Confirmation data:', data);
+          // Dispatch an action to initiate phone number login
+          const initiaterresponse = await dispatch(mobileLoginInitiate(data.phoneNumber));
+          console.log('Initiator response:', initiaterresponse);
+          
+          // Ensure initiaterresponse contains confirmationResult
+          if (initiaterresponse && initiaterresponse.verificationId) {
+            setUser(initiaterresponse); // Store the confirmationResult object
+          } else {
+            throw new Error('Failed to get confirmationResult');
+          }
+        } catch (error) {
+          console.error('Error in handleSendOtp:', error);
+          toast.error("Failed to send OTP");
+        }
+      };
+      
+      
+      const handleVerify = async (e) => {
+        e.preventDefault();
+        console.log('User (confirmationResult):', user);
+      
+        try {
+          if (!user || !data.otp) {
+            throw new Error('User or OTP is not defined');
+          }
+      
+          // Get the Firebase Auth instance
+          const auth = getAuth();
+      
+          // Create an AuthCredential object using the verificationId and OTP
+          const credential = PhoneAuthProvider.credential(user.verificationId, data.otp);
+      
+          // Sign in with the credential
+          const result = await signInWithCredential(auth, credential);
+          console.log('Confirmation data:', result);
+      
+          // Handle successful authentication
           toast.success("Phone number authentication successfully completed");
-          localStorage.setItem("pusernumber", data.user.phoneNumber);
-          localStorage.setItem("ptoken", data.user.accessToken);
+          localStorage.setItem("pusernumber", result.user.phoneNumber);
+          localStorage.setItem("ptoken", result.user.accessToken);
           navigate('/');
-        } catch (err) {
-          console.error('Error in handleVerify:', err);
+        } catch (error) {
+          console.error('Error in handleVerify:', error);
           toast.error("Phone number authentication failed");
         }
       };
+      
+      
       const handleGoogle = async () => {
         dispatch(googleLoginInitiate(navigate))
         }
